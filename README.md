@@ -110,7 +110,7 @@ This project demonstrates how AI can be integrated with workflow automation tool
 
 ## 👨‍💻 Author
 
-**Jagadeesh Galla**
+**Galla jagadeesh**
 
 If you found this project useful, consider giving it a ⭐ on GitHub.
 
