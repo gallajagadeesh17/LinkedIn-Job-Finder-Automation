@@ -1,116 +1,224 @@
-# 🚀 LinkedIn AI Automation
+# 🔎 LinkedIn Job Finder Automation
 
-An AI-powered LinkedIn content automation system that generates professional LinkedIn posts, allows users to review and approve the content via Gmail, regenerates posts based on user feedback, and publishes the approved content to LinkedIn.
+> **An n8n-powered job discovery workflow that turns your search criteria into structured LinkedIn job leads and saves them directly to Google Sheets.**
 
----
-
-## 📌 Project Overview
-
-LinkedIn AI Automation streamlines the process of creating and publishing LinkedIn posts by combining Artificial Intelligence with workflow automation.
-
-The system generates high-quality LinkedIn posts using Google's Gemini AI, sends the generated content to the user for approval through Gmail, allows regeneration if the user is not satisfied, and publishes the final approved post directly to LinkedIn.
-
-This project demonstrates how AI can be integrated with workflow automation tools to simplify professional content creation.
+[![n8n](https://img.shields.io/badge/Automation-n8n-ff6d5a?style=for-the-badge&logo=n8n&logoColor=white)](https://n8n.io/)
+[![Bright Data](https://img.shields.io/badge/Data-Bright%20Data-111827?style=for-the-badge)](https://brightdata.com/)
+[![Google Sheets](https://img.shields.io/badge/Output-Google%20Sheets-34a853?style=for-the-badge&logo=googlesheets&logoColor=white)](https://www.google.com/sheets/about/)
 
 ---
 
-## ✨ Features
+## ✨ What is this?
 
-* 🤖 AI-powered LinkedIn post generation
-* 📧 Gmail approval workflow
-* 🔄 AI-based post regeneration
-* ✅ User approval before publishing
-* ❌ Post rejection and cancellation workflow
-* 🔀 Decision-based automation using Switch and IF nodes
-* 💼 Automatic LinkedIn publishing
-* ⚡ End-to-end workflow automation with n8n
+**LinkedIn Job Finder Automation** is an n8n workflow designed to reduce the manual work involved in searching for jobs.
 
----
+Instead of repeatedly searching LinkedIn, copying job details, and maintaining a spreadsheet manually, you provide your search criteria once. The workflow sends the request to Bright Data's LinkedIn dataset, waits for the scraping job to complete, retrieves the results, filters them, and stores useful job information in Google Sheets.
 
-## 🛠 Tech Stack
+### 🎯 The goal
 
-* **Automation Platform:** n8n
-* **AI Model:** Google Gemini 2.5 Flash
-* **Email Service:** Gmail
-* **Social Platform:** LinkedIn API
-* **Trigger:** Telegram Bot
-* **Logic:** Switch & IF Nodes
+**Search → Collect → Filter → Organize → Apply**
 
 ---
 
-## ⚙ Workflow
+## 🧠 How it works
 
-1. User sends a topic through Telegram.
-2. Gemini AI generates a professional LinkedIn post.
-3. The post is formatted automatically.
-4. Gmail sends the generated post to the user for review.
-5. The user chooses one of the following:
-
-   * Approve
-   * Regenerate
-   * Reject
-6. If **Approve**, the post is published on LinkedIn.
-7. If **Regenerate**, Gemini AI creates a new version and sends it again for approval.
-8. If **Reject**, the workflow ends without publishing.
-
----
-
-## 📷 Project Screenshots
-
-### Workflow
-<img width="1918" height="971" alt="workflow" src="https://github.com/user-attachments/assets/b040e846-45aa-4b74-8796-3f7e94c7dc6d" />
-
-
-### Gmail Approval
-<img width="1918" height="972" alt="gmail-approval" src="https://github.com/user-attachments/assets/2c316f94-5c2d-42ca-97b7-1903201cc649" />
-
-
-### LinkedIn Post
-<img width="1247" height="1077" alt="linkedin-post" src="https://github.com/user-attachments/assets/15662ed2-6127-40cb-8caa-f0414b77a1d0" />
-
-
-
-### Telegram Trigger
-<img width="1232" height="1078" alt="telegram" src="https://github.com/user-attachments/assets/2b1b1193-f499-49e8-9277-9e2e964db932" />
-
+```text
+Search Form
+   ↓
+Bright Data LinkedIn Search
+   ↓
+Snapshot Tracking
+   ↓
+Ready? ── No ──→ Wait 1 minute ──→ Check again
+   │
+  Yes
+   ↓
+Fetch Jobs
+   ↓
+Filter Results
+   ↓
+Google Sheets
+```
 
 ---
 
-## 🎯 Project Objectives
+## 🚀 Features
 
-* Automate LinkedIn content creation.
-* Reduce manual effort in professional posting.
-* Introduce a user approval process before publishing.
-* Demonstrate AI-driven workflow automation.
-* Improve content quality through AI regeneration.
-
----
-
-## 🚀 Future Enhancements
-
-* AI-generated images for LinkedIn posts
-* Automatic post scheduling
-* Multi-language support
-* Analytics dashboard
-* Performance tracking
-* Content calendar integration
-* Multi-platform publishing (X, Facebook, Instagram)
+- 🔍 **Custom job search** — city, job title, country, and job type.
+- 🏢 **LinkedIn job discovery** — Bright Data LinkedIn dataset API.
+- ⏳ **Automatic status polling** — waits until the snapshot is ready.
+- 🧹 **Result filtering** — filters collected results before storage.
+- 📊 **Google Sheets output** — creates a structured job tracker.
+- 🔗 **Application links** — keeps available apply links with each result.
+- 📅 **Recent opportunities** — configured to search the past week.
+- 🔐 **Credential-safe workflow** — shared export uses placeholders instead of secrets.
 
 ---
 
-## 📌 Project Highlights
+## 📝 Search inputs
 
-* AI-powered content generation
-* Human approval before publishing
-* Intelligent content regeneration
-* Professional automation workflow
-* Business-oriented AI application
+| Input | Purpose |
+|---|---|
+| 📍 City | Target job location |
+| 💼 Job Title | Role or keyword |
+| 🌎 Country | Target country |
+| 🏷️ Job Type | Full-Time, Part-Time, Remote, WFH, Contract, Internship, or Freelance |
+
+Job type is optional.
+
+---
+
+## 📦 Job information
+
+The workflow requests a broad set of job fields and stores the most useful ones in Google Sheets:
+
+- **Job Title**
+- **Company Name**
+- **Location**
+- **Job Details / Summary**
+- **Apply Link**
+- **Company URL**
+
+The Bright Data request also asks for fields such as posting date, employment type, seniority, industry, salary information, applicant count, job URL, and formatted description.
+
+---
+
+## 🛠️ Tech Stack
+
+| Technology | Role |
+|---|---|
+| **n8n** | Workflow automation |
+| **Bright Data** | LinkedIn job data collection |
+| **Google Sheets** | Job storage and tracking |
+| **HTTP Request nodes** | API communication |
+| **n8n Form Trigger** | Search input |
+| **IF / Filter / Wait nodes** | Workflow control |
+
+---
+
+## 📁 Repository structure
+
+```text
+Linkedin-Automation-AI/
+├── workflows/
+│   └── linkedin-job-finder.json   # Importable n8n workflow
+├── screenshots/                   # Optional workflow screenshots
+└── README.md
+```
+
+---
+
+## ⚙️ Setup
+
+### 1. Import the workflow
+
+Import this file into your n8n instance:
+
+```text
+workflows/linkedin-job-finder.json
+```
+
+### 2. Configure Bright Data
+
+Replace:
+
+```text
+Bearer YOUR_BRIGHT_DATA_API_TOKEN
+```
+
+with your own Bright Data credential in the HTTP Request nodes.
+
+### 3. Configure Google Sheets
+
+Connect your Google Sheets credential in n8n and replace:
+
+```text
+YOUR_GOOGLE_SHEET_ID
+```
+
+with your spreadsheet ID. Select the required worksheet.
+
+### 4. Test a search
+
+Example:
+
+```text
+City: Bangalore
+Job Title: AI/ML Engineer
+Country: India
+Job Type: Full-Time
+```
+
+The workflow starts the Bright Data task, monitors the snapshot, retrieves the results, filters them, and writes the selected fields to Google Sheets.
+
+---
+
+## 🔐 Security
+
+This repository intentionally uses placeholders for credentials and private connection data.
+
+**Never commit:**
+
+- Bright Data API tokens
+- Google OAuth credentials
+- Private webhook secrets
+- Personal access tokens
+- Service-account private keys
+
+Use n8n's credential manager or environment variables for production secrets.
+
+> ⚠️ If a secret has already been exposed publicly, revoke or rotate it immediately.
+
+---
+
+## 🎬 Workflow at a glance
+
+**01 — Search** → Enter job requirements through the n8n form.
+
+**02 — Discover** → Bright Data starts the LinkedIn data collection task.
+
+**03 — Track** → n8n checks the snapshot status and waits when necessary.
+
+**04 — Collect** → The completed snapshot is downloaded.
+
+**05 — Organize** → Results are filtered and appended to Google Sheets.
+
+**06 — Apply** → Use the stored job and application links to continue your search.
+
+---
+
+## 💡 Why this automation is useful
+
+Manual job hunting often means:
+
+> Search → Open jobs → Copy details → Paste into spreadsheet → Repeat
+
+This workflow converts that repetitive process into an automated pipeline and gives you a structured job list that can be reviewed, sorted, and tracked in Google Sheets.
+
+---
+
+## 🔮 Future improvements
+
+- 🤖 AI-based job matching and relevance scoring
+- 📄 Resume-to-job compatibility analysis
+- 📨 Email or Telegram job alerts
+- 🚫 Duplicate job detection
+- 📈 Application tracking dashboard
+- 🧠 Skill-gap analysis from job descriptions
+- ⭐ Personalized job ranking
+- ⏰ Scheduled daily job searches
+- 📊 Job-market analytics
 
 ---
 
 ## 👨‍💻 Author
 
-**Galla jagadeesh**
+**Galla Jagadeesh**
 
-If you found this project useful, consider giving it a ⭐ on GitHub.
+Built with **n8n + Bright Data + Google Sheets** to automate repetitive job-search workflows.
 
+---
+
+## ⭐ Support
+
+If this project helps automate your job search, consider giving the repository a ⭐ and sharing improvements.
